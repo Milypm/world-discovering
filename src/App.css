@@ -47,4 +47,8 @@
   .index-posts {
     grid-template-columns: repeat(2, 50%);
   }
+
+  .modal {
+    border: 2px solid blue;
+  }
 }
