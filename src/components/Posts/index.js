@@ -1,21 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import indexPosts from '../../API/posts';
+import ShowPost from './show';
 
 const PostsIndex = (props) => {
   const { posts } = props;
-  const post = (title, body) => {
-    return (
-          <div>
-            <p>{title}</p>
-            <p>{body}</p>
-          </div>
-    )
+
+  const onClickHandler = (id) => {
+    const indexPosts = async () => {
+      const fetched = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, { mode: 'cors' });
+      const data = await fetched.json();
+      return data;
+    }
+    return indexPosts;
   }
+
   return (
     <div className='index-posts'>
       {
         posts.map((obj) => (
-          post(obj.title, obj.body)
+          <ShowPost
+            key={obj.id}
+            title={obj.title}
+            body={obj.body}
+            id={obj.id}
+            onClickHandler={onClickHandler}
+          />
         ))
       }
     </div>
