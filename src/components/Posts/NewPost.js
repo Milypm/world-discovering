@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-// import Button from 'react-bootstrap/Button';
-// import Modal from 'react-bootstrap/Modal';
+import { useNavigate } from 'react-router-dom'
 
 const NewPost = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     fetch('https://jsonplaceholder.typicode.com/posts', {
   method: 'POST',
@@ -18,17 +18,20 @@ const NewPost = () => {
   },
 })
   .then((response) => response.json())
-  .then((json) => json);
+  .then((json) => console.log(json));
     event.preventDefault();
     alert('Your post was created succesfully!')
   }
   return (
-    <form onSubmit={handleSubmit}>
+    <>
+      <form onSubmit={handleSubmit}>
       <label>New Post</label>
         <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder='Title' />
         <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder='Description' />
         <input type="submit" placeholder='Save' />
     </form>
+    <button onClick={() => navigate(-1)}>Go Back</button>
+    </>
   )
 }
 

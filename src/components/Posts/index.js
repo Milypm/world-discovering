@@ -1,11 +1,11 @@
 import ShowPost from './show';
 
 const PostsIndex = (props) => {
-  const { posts } = props;
+  const { posts, images } = props;
 
   const onClickHandler = (id) => {
     const indexPosts = async () => {
-      const fetched = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, { mode: 'cors' });
+      const fetched = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, { mode: 'cors' }, );
       const data = await fetched.json();
       return data;
     }
@@ -16,13 +16,17 @@ const PostsIndex = (props) => {
     <div className='index-posts'>
       {
         posts.map((obj) => (
+         
           <ShowPost
             key={obj.id}
             title={obj.title}
             body={obj.body}
             id={obj.id}
             onClickHandler={onClickHandler}
-          />
+            style={{
+              backgroundImage: `url()`
+            }}
+          /> 
         ))
       }
     </div>

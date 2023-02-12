@@ -13,7 +13,7 @@ const PostDetails = () => {
       setPost(data);
     }
     getPost();
-  }, [])
+  }, [id])
   return (
     <div>
       {

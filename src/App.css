@@ -48,6 +48,11 @@
     grid-template-columns: repeat(2, 50%);
   }
 
+  .post-detail-frame {
+    border: 2px solid blue;
+    min-height: 50vh;
+  }
+
   .modal {
     border: 2px solid blue;
   }

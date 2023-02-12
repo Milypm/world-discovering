@@ -1,60 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Modal, ModalHeader, ModalTitle, ModalBody, Form, ModalFooter } from "react-bootstrap";
-import Button from 'react-bootstrap/Button';
 import './App.css';
 import Header from './components/Header';
 import Navigation from './components/Navbar';
 import PostsIndex from './components/Posts/index';
-import newPost from './components/Posts/NewPost';
-import indexPosts from './API/posts';
 
 const Home = () => {
+  console.log(process.env.REACT_APP_GOOGLE_API_KEY)
   const [posts, setPosts] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [name, setName] = useState('');
+  const [images, setImages] = useState([]);
   useEffect(() => {
-    // setPosts(getPosts());
     const indexPosts = async () => {
       const fetched = await fetch('https://jsonplaceholder.typicode.com/posts', { mode: 'cors' });
       const data = await fetched.json();
-      // return data;
       setPosts(data);
     }
     indexPosts();
   }, []);
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
-  const handleChange = (e) => setName(e.target.value);
-  const newPostModal = () => {
-    console.log('newPostModal')
-    return (
-      <>
-        <div
-          className="modal fade d-flex align-items-center justify-content-center"
-          style={{ height: "100vh" }}
-          >
-        </div>
-        <Modal className="modal-dialog" show={isOpen} onHide={closeModal}>
-        <ModalHeader closeButton>
-          <ModalTitle>Modal heading</ModalTitle>
-        </ModalHeader>
-        <ModalBody>
-        <Form.Group >
-            <Form.Label>New Post</Form.Label>
-            <Form.Control type="text" onChange={handleChange} value={name} placeholder="name input"/>           
-        </Form.Group>
-        </ModalBody>
-        <ModalFooter>
-          {/* <Button variant="primary" onClick={handleSubmit}>
-            Submit 
-          </Button> */}
-        </ModalFooter>
-        </Modal>
-      </>
-    )
-  }
-  // console.log('Home renders', posts);
+  useEffect(() => {
+    const indexImages = async () => {
+      const fetched = await fetch('https://api.unsplash.com/photos/random', {
+        // mode: 'cors',
+        method: 'GET',
+        withCredentials: true,
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': '*',
+          // 'Access-Control-Allow-Methods': '*',
+          'Authorization': 'Client-ID ELdX89sozAo65JmO-Mrp_A29Nk1rJy4rJ2m-6CQfMdw',
+        }
+      });
+      const data = await fetched.json();
+      console.log('images data', data)
+      setImages(data);
+    }
+    indexImages();
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -63,18 +47,10 @@ const Home = () => {
       <Link to={{ pathname: `/posts/new`}}>
         Create new post
       </Link>
-      {/* <Button variant="primary" onClick={openModal}></Button> */}
-      {/* {newPostModal()} */}
-      {/* <Example
-        openModal={openModal}
-        closeModal={closeModal}
-        isOpen={isOpen}
-      /> */}
       <Navigation />
-      
       {
         posts.length !== 0
-        ? <PostsIndex posts={posts} />
+        ? <PostsIndex posts={posts} images={images} />
         : <p>posts is empty</p>
       }
     </div>
